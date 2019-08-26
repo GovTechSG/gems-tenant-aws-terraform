@@ -1,4 +1,4 @@
-# ${1:GEMS}
+# GEMS
 Terraform scripts for Kong EE deployment in AWS
 
 ## Requirements
