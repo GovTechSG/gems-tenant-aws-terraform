@@ -1,6 +1,6 @@
-# GEMS
+# GEMS AWS Terraform Blueprint
 
-Terraform scripts for Kong EE deployment in AWS. These scripts will help to spin up a set of Kong Enterprise containers deployed in AWS with the necessary resource and service configurations.
+Terraform scripts for Kong EE deployment in AWS. These scripts will help to spin up a set of Kong Enterprise containers deployed in AWS with the necessarycd resource and service configurations.
 
 ## Requirements
 
@@ -11,7 +11,21 @@ Terraform scripts for Kong EE deployment in AWS. These scripts will help to spin
 ## Usage
 
 1. Insert your aws_access_key and aws_secret_key in vars.tf
-1. Just init, plan and apply!
+2. Just init, plan and apply!
+
+```
+terraform init
+terraform plan
+terraform apply
+```
+
+3. Shutting down EC2 instance
+
+If you decided to bring down the EC2 instance after testing, just destroy it by running this :
+
+```
+terraform destroy
+```
 
 ## TODO
 
@@ -21,3 +35,7 @@ Terraform scripts for Kong EE deployment in AWS. These scripts will help to spin
 4. Containerize the terraform runtime
 5. Integrate with S3 backend
 6. Beef up documentations
+
+## License
+
+Government Technology Agency of Singapore (c) [MIT LICENSE ](https://github.com/robincher/gems-tenant-aws-terraform/blob/master/LICENSE)
