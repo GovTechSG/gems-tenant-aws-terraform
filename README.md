@@ -16,7 +16,9 @@ Terraform scripts for Kong EE deployment in AWS. These scripts will help to spin
 ```
 terraform init
 terraform plan
-terraform apply
+
+# Running with local vars that store secrets
+terraform apply -var-file=secret.tfvars
 ```
 
 3. Shutting down EC2 instance
