@@ -35,6 +35,16 @@ resource "aws_subnet" "az1_pub" {
     Name = "${var.gems_tag}_pub"
   }
 }
+resource "aws_subnet" "az2_pub" {
+  vpc_id     = "${aws_vpc.GEMS_Tenant.id}"
+  cidr_block = "${var.vpc_cidr_ip}.30.0/24"
+  map_public_ip_on_launch = true
+  availability_zone = "${var.region}b"
+
+  tags = {
+    Name = "${var.gems_tag}_pub"
+  }
+}
 
 resource "aws_route_table" "az1_pub_rt" {
     vpc_id = "${aws_vpc.GEMS_Tenant.id}"

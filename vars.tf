@@ -3,11 +3,11 @@ variable "region" {
 }
 
 variable "access_key" {
-  default = ""
+  default = "AKIASEDLHH6DLW4NDFCD"
 }
 
 variable "secret_key" {
-  default = ""
+  default = "n9Kpc8lMdnVhp00WzSG4FHEp9B9AdTkxnU8Oj5rk"
 }
 
 variable "gems_tag" {
