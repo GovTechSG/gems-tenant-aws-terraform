@@ -32,7 +32,19 @@ resource "aws_instance" "GEMS_Tenant_Kong_Gateway" {
   tags = {
     Name = "${var.gems_tag}_ec2_gw"
   }
+  connection {
+      host        = "${aws_instance.GEMS_Tenant_Kong_Gateway.public_ip}"
+      type        = "ssh"
+      user        = "centos"
+      private_key = "${file("~/.ssh/awsgems.pem")}"
+    }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install -y yum-utils docker",
+      "sudo systemctl start docker",
+    ]
+  }
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_instance" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
@@ -44,6 +56,19 @@ resource "aws_instance" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
 
   tags = {
     Name = "${var.gems_tag}_ec2_mgr_adm"
+  }
+  connection {
+      host        = "${aws_instance.GEMS_Tenant_Kong_Gateway.public_ip}"
+      type        = "ssh"
+      user        = "centos"
+      private_key = "${file("~/.ssh/awsgems.pem")}"
+    }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install -y yum-utils docker",
+      "sudo systemctl start docker",
+    ]
   }
 
 }
@@ -57,6 +82,31 @@ resource "aws_instance" "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API" {
 
   tags = {
     Name = "${var.gems_tag}_ec2_dp_dpa"
+  }
+  connection {
+      host        = "${aws_instance.GEMS_Tenant_Kong_Gateway.public_ip}"
+      type        = "ssh"
+      user        = "centos"
+      private_key = "${file("~/.ssh/awsgems.pem")}"
+    }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install -y yum-utils device-mapper-persistent-data lvm2",
+      "sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo",
+      "sudo yum install -y docker-ce docker-ce-cli containerd.io",
+      "sudo systemctl enable docker",
+      "sudo systemctl start docker",
+      "sudo docker login -u govtech_eval_govtech-singapore@kong -p 8b4ccf5e12183b88a8506ab9db450cfea1fb0843 kong-docker-kong-enterprise-edition-docker.bintray.io",
+      "sudo docker pull kong-docker-kong-enterprise-edition-docker.bintray.io/kong-enterprise-edition",
+      "sudo docker tag kong-docker-kong-enterprise-edition-docker.bintray.io/kong-enterprise-edition:latest kong-ee:latest",
+      "export KONG_LICENSE_DATA='{"license":{"signature":"200b7ce3879831fb8f9ccbdbc72f05aeea1ace05dd6d1643765ef77e221ac1f87accb9ff4ab8ffa2c88b28b95569bf4cd7706ef0f7ea258a55056f929e5b7583","payload":{"customer":"Govtech_Eval","license_creation_date":"2019-07-30","product_subscription":"Kong Enterprise Edition","admin_seats":"5","support_plan":"None","license_expiration_date":"2019-08-31","license_key":"0011K000029bt6rQAA_a1V1K000007JuyDUAS"},"version":1}}'",
+      "export KONG_ADMIN_GUI_SESSION_CONF='{"cookie_name":"04tm34l","secret":"nothing","storage":"kong","cookie_secure":false,"cookie_samesite":"off","cookie_lifetime":21600}'",
+      "export KONG_PORTAL_SESSION_CONF='{"cookie_name":"04tm35l","secret":"nothing","storage":"kong","cookie_secure":false,"cookie_samesite":"off","cookie_lifetime":21600}'",
+      "sudo docker run --rm -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=postgres" -e "KONG_PG_PASSWORD=Pass1234" -e "KONG_PG_HOST=gemstenantdatabase.cbr0akovk5zo.ap-southeast-1.rds.amazonaws.com" -e "KONG_PASSWORD=Pass1234" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" kong-ee kong migrations bootstrap",
+      "sudo docker run --rm -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=postgres" -e "KONG_PG_PASSWORD=Pass1234" -e "KONG_PG_HOST=gemstenantdatabase.cbr0akovk5zo.ap-southeast-1.rds.amazonaws.com" -e "KONG_PASSWORD=Pass1234" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" kong-ee kong migrations up",
+      "sudo docker rm -f kong-ee"
+    ]
   }
 
 }

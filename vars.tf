@@ -1,13 +1,12 @@
 variable "region" {
   default = "ap-southeast-1"
 }
-
 variable "access_key" {
-  default = "AKIASEDLHH6DLW4NDFCD"
+  default = ""
 }
 
 variable "secret_key" {
-  default = "n9Kpc8lMdnVhp00WzSG4FHEp9B9AdTkxnU8Oj5rk"
+  default = ""
 }
 
 variable "gems_tag" {
