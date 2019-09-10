@@ -259,3 +259,27 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API" {
     Name = "${var.gems_tag}_sg_dp_dpa"
   }
 }
+#-----------------------------------------------------------------------------------------------------------------------
+resource "aws_security_group" "GEMS_Tenant_DB" {
+  name        = "GEMS_Tenant_DB"
+  description = "Allow traffic from Instances to DB"
+  vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    security_groups = ["${aws_security_group.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}","${aws_security_group.GEMS_Tenant_Kong_Manager_And_Admin_API.id}","${aws_security_group.GEMS_Tenant_Kong_Gateway.id}"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.gems_tag}_sg_db"
+  }
+}
