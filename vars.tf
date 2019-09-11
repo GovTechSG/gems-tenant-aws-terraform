@@ -31,19 +31,19 @@ variable "cert_id" {
 }
 
 variable "database_admin_username"{
-  default = "postgres"
+  default = ""
 }
 
 variable "database_admin_password"{
-  default = "Pass1234"
+  default = ""
 }
 
 variable "portal_admin_password"{
-  default = "Pass1234"
+  default = ""
 }
 
 variable "portal_license"{
-  default = "'{\"license\":{\"signature\":\"200b7ce3879831fb8f9ccbdbc72f05aeea1ace05dd6d1643765ef77e221ac1f87accb9ff4ab8ffa2c88b28b95569bf4cd7706ef0f7ea258a55056f929e5b7583\",\"payload\":{\"customer\":\"Govtech_Eval\",\"license_creation_date\":\"2019-07-30\",\"product_subscription\":\"Kong Enterprise Edition\",\"admin_seats\":\"5\",\"support_plan\":\"None\",\"license_expiration_date\":\"2019-08-31\",\"license_key\":\"0011K000029bt6rQAA_a1V1K000007JuyDUAS\"},\"version\":1}}'"
+  default = ""
 }
 
 variable "manager_auth_conf"{

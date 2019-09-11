@@ -35,6 +35,11 @@ resource "aws_route53_record" "manager" {
     evaluate_target_health = false
   }
 }
+
+output "manager" {
+  value = "The Manager dns is : ${aws_route53_record.manager.name}"
+}
+
 resource "aws_route53_record" "devportal" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
   name    = "${var.dev_portal_uri}."
@@ -46,6 +51,11 @@ resource "aws_route53_record" "devportal" {
     evaluate_target_health = false
   }
 }
+
+output "devportal" {
+  value = "The Developer dns record is : ${aws_route53_record.devportal.name}"
+}
+
 resource "aws_route53_record" "devportalapi" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
   name    = "${var.dev_portal_api_uri}."
