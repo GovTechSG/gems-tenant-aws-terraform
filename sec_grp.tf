@@ -164,6 +164,12 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Gateway" {
     protocol    = "tcp"
     security_groups = ["${aws_security_group.GEMS_Tenant_Bastion.id}"]
   }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks     = ["129.126.72.14/32"]
+  }
 
   ingress {
     from_port   = 8000
@@ -194,6 +200,12 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
     to_port     = 22
     protocol    = "tcp"
     security_groups = ["${aws_security_group.GEMS_Tenant_Bastion.id}"]
+  }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks     = ["129.126.72.14/32"]
   }
 
   ingress {
@@ -232,6 +244,12 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API" {
     to_port     = 22
     protocol    = "tcp"
     security_groups = ["${aws_security_group.GEMS_Tenant_Bastion.id}"]
+  }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks     = ["129.126.72.14/32"]
   }
 
   ingress {

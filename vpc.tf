@@ -11,6 +11,7 @@
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_vpc" "GEMS_Tenant" {
   cidr_block = "${var.vpc_cidr_ip}.0.0/16"
+  enable_dns_hostnames = true
 
   tags = {
     Name = "${var.gems_tag}_vpc"
@@ -32,7 +33,7 @@ resource "aws_subnet" "az1_pub" {
   availability_zone = "${var.region}a"
 
   tags = {
-    Name = "${var.gems_tag}_pub"
+    Name = "${var.gems_tag}_pub1"
   }
 }
 resource "aws_subnet" "az2_pub" {
@@ -42,7 +43,7 @@ resource "aws_subnet" "az2_pub" {
   availability_zone = "${var.region}b"
 
   tags = {
-    Name = "${var.gems_tag}_pub"
+    Name = "${var.gems_tag}_pub2"
   }
 }
 

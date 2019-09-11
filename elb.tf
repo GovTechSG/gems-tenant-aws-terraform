@@ -10,10 +10,6 @@
                                                                                                                                                                
 */
 #-----------------------------------------------------------------------------------------------------------------------
-data "aws_acm_certificate" "gemsapi" {
-  domain   = "*.gemsapi.io"
-  statuses = ["ISSUED"]
-}
 # resource "aws_elb" "GEMS-ELB-Gateway" {
 #   name               = "GEMS-ELB-Gateway"
 #   subnets      = ["${aws_subnet.az1_pub.id}"]
@@ -76,16 +72,17 @@ resource "aws_lb" "GEMS-ELB-Gateway" {
     }
 }
 
-resource "aws_lb_listener_certificate" "GEMS-Gateway-Cert" {
-    listener_arn         = "${aws_lb_listener.GEMS-Listener-Gateway.arn}"
-    certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
-}
+# resource "aws_lb_listener_certificate" "GEMS-Gateway-Cert" {
+#     listener_arn         = "${aws_lb_listener.GEMS-Listener-Gateway.arn}"
+#     certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
+# }
 
 resource "aws_lb_listener" "GEMS-Listener-Gateway" {
     load_balancer_arn   = "${aws_lb.GEMS-ELB-Gateway.arn}"
     port                = 443
     protocol            = "HTTPS"
     ssl_policy          = "ELBSecurityPolicy-2016-08"
+    certificate_arn     = "${var.cert_id}"
 
     default_action {
         type             = "forward"
@@ -154,16 +151,17 @@ resource "aws_lb" "GEMS-ELB-Admin-API" {
       Name = "${var.gems_tag}_elb_adm"
     }
 }
-resource "aws_lb_listener_certificate" "GEMS-Admin-API-Cert" {
-    listener_arn         = "${aws_lb_listener.GEMS-Listener-Admin-API.arn}"
-    certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
-}
+# resource "aws_lb_listener_certificate" "GEMS-Admin-API-Cert" {
+#     listener_arn         = "${aws_lb_listener.GEMS-Listener-Admin-API.arn}"
+#     certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
+# }
 
 resource "aws_lb_listener" "GEMS-Listener-Admin-API" {
     load_balancer_arn   = "${aws_lb.GEMS-ELB-Admin-API.arn}"
     port                = 443
     protocol            = "HTTPS"
     ssl_policy          = "ELBSecurityPolicy-2016-08"
+    certificate_arn     = "${var.cert_id}"
 
     default_action {
         type             = "forward"
@@ -233,16 +231,17 @@ resource "aws_lb" "GEMS-ELB-Manager" {
     }
 }
 
-resource "aws_lb_listener_certificate" "GEMS-Manager-Cert" {
-    listener_arn         = "${aws_lb_listener.GEMS-Listener-Manager.arn}"
-    certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
-}
+# resource "aws_lb_listener_certificate" "GEMS-Manager-Cert" {
+#     listener_arn         = "${aws_lb_listener.GEMS-Listener-Manager.arn}"
+#     certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
+# }
 
 resource "aws_lb_listener" "GEMS-Listener-Manager" {
     load_balancer_arn   = "${aws_lb.GEMS-ELB-Manager.arn}"
     port                = 443
     protocol            = "HTTPS"
     ssl_policy          = "ELBSecurityPolicy-2016-08"
+    certificate_arn     = "${var.cert_id}"
 
     default_action {
         type             = "forward"
@@ -310,16 +309,17 @@ resource "aws_lb" "GEMS-ELB-Dev-Portal" {
       Name = "${var.gems_tag}_elb_dp"
     }
 }
-resource "aws_lb_listener_certificate" "GEMS-Dev-Portal-Cert" {
-    listener_arn         = "${aws_lb_listener.GEMS-Listener-Dev-Portal.arn}"
-    certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
-}
+# resource "aws_lb_listener_certificate" "GEMS-Dev-Portal-Cert" {
+#     listener_arn         = "${aws_lb_listener.GEMS-Listener-Dev-Portal.arn}"
+#     certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
+# }
 
 resource "aws_lb_listener" "GEMS-Listener-Dev-Portal" {
     load_balancer_arn   = "${aws_lb.GEMS-ELB-Dev-Portal.arn}"
     port                = 443
     protocol            = "HTTPS"
     ssl_policy          = "ELBSecurityPolicy-2016-08"
+    certificate_arn     = "${var.cert_id}"
 
     default_action {
         type             = "forward"
@@ -387,17 +387,17 @@ resource "aws_lb" "GEMS-ELB-Dev-Portal-API" {
       Name = "${var.gems_tag}_elb_dpa"
     }
 }
-resource "aws_lb_listener_certificate" "GEMS-Dev-Portal-API-Cert" {
-    listener_arn         = "${aws_lb_listener.GEMS-Listener-Dev-Portal-API.arn}"
-    certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
-}
+# resource "aws_lb_listener_certificate" "GEMS-Dev-Portal-API-Cert" {
+#     listener_arn         = "${aws_lb_listener.GEMS-Listener-Dev-Portal-API.arn}"
+#     certificate_arn      = "${data.aws_acm_certificate.gemsapi.arn}"
+# }
 
 resource "aws_lb_listener" "GEMS-Listener-Dev-Portal-API" {
     load_balancer_arn   = "${aws_lb.GEMS-ELB-Dev-Portal-API.arn}"
     port                = 443
     protocol            = "HTTPS"
     ssl_policy          = "ELBSecurityPolicy-2016-08"
-    certificate_arn     = "${data.aws_acm_certificate.gemsapi.arn}"
+    certificate_arn     = "${var.cert_id}"
 
     default_action {
         type             = "forward"

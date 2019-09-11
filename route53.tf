@@ -10,7 +10,7 @@ resource "aws_route53_record" "gateway" {
   alias {
     name                   = "${aws_lb.GEMS-ELB-Gateway.dns_name}"
     zone_id                = "${aws_lb.GEMS-ELB-Gateway.zone_id}"
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 resource "aws_route53_record" "adminapi" {
@@ -21,7 +21,7 @@ resource "aws_route53_record" "adminapi" {
   alias {
     name                   = "${aws_lb.GEMS-ELB-Admin-API.dns_name}"
     zone_id                = "${aws_lb.GEMS-ELB-Admin-API.zone_id}"
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 resource "aws_route53_record" "manager" {
@@ -32,7 +32,7 @@ resource "aws_route53_record" "manager" {
   alias {
     name                   = "${aws_lb.GEMS-ELB-Manager.dns_name}"
     zone_id                = "${aws_lb.GEMS-ELB-Manager.zone_id}"
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 resource "aws_route53_record" "devportal" {
@@ -43,7 +43,7 @@ resource "aws_route53_record" "devportal" {
   alias {
     name                   = "${aws_lb.GEMS-ELB-Dev-Portal.dns_name}"
     zone_id                = "${aws_lb.GEMS-ELB-Dev-Portal.zone_id}"
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
 resource "aws_route53_record" "devportalapi" {
@@ -54,6 +54,6 @@ resource "aws_route53_record" "devportalapi" {
   alias {
     name                   = "${aws_lb.GEMS-ELB-Dev-Portal-API.dns_name}"
     zone_id                = "${aws_lb.GEMS-ELB-Dev-Portal-API.zone_id}"
-    evaluate_target_health = true
+    evaluate_target_health = false
   }
 }
