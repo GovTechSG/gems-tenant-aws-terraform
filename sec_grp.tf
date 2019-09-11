@@ -18,7 +18,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Gateway" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["129.126.72.14/32"]
+    cidr_blocks = ["${var.provider_ip}/32"]
   }
 
   egress {
@@ -42,7 +42,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Admin_API" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["129.126.72.14/32"]
+    cidr_blocks = ["${var.provider_ip}/32"]
   }
 
   egress {
@@ -66,7 +66,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Manager" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["129.126.72.14/32"]
+    cidr_blocks = ["${var.provider_ip}/32"]
   }
 
   egress {
@@ -90,7 +90,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Dev_Portal" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["129.126.72.14/32"]
+    cidr_blocks = ["${var.provider_ip}/32"]
   }
 
   egress {
@@ -114,7 +114,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Dev_Portal_API" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["129.126.72.14/32"]
+    cidr_blocks = ["${var.provider_ip}/32"]
   }
 
   egress {
@@ -138,7 +138,7 @@ resource "aws_security_group" "GEMS_Tenant_Bastion" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["129.126.72.14/32"]
+    cidr_blocks = ["${var.provider_ip}/32"]
   }
 
   egress {
@@ -168,7 +168,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Gateway" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks     = ["129.126.72.14/32"]
+    cidr_blocks     = ["${var.provider_ip}/32"]
   }
 
   ingress {
@@ -205,7 +205,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks     = ["129.126.72.14/32"]
+    cidr_blocks     = ["${var.provider_ip}/32"]
   }
 
   ingress {
@@ -249,7 +249,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks     = ["129.126.72.14/32"]
+    cidr_blocks     = ["${var.provider_ip}/32"]
   }
 
   ingress {

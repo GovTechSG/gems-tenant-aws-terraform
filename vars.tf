@@ -31,37 +31,57 @@ variable "cert_id" {
 }
 
 variable "database_admin_username"{
-  default = ""
+  default = "postgres"
 }
 
 variable "database_admin_password"{
-  default = ""
+  default = "Pass1234"
 }
 
 variable "portal_admin_password"{
-  default = ""
+  default = "Pass1234"
 }
 
 variable "portal_license"{
-  default = ""
+  default = "'{\"license\":{\"signature\":\"200b7ce3879831fb8f9ccbdbc72f05aeea1ace05dd6d1643765ef77e221ac1f87accb9ff4ab8ffa2c88b28b95569bf4cd7706ef0f7ea258a55056f929e5b7583\",\"payload\":{\"customer\":\"Govtech_Eval\",\"license_creation_date\":\"2019-07-30\",\"product_subscription\":\"Kong Enterprise Edition\",\"admin_seats\":\"5\",\"support_plan\":\"None\",\"license_expiration_date\":\"2019-08-31\",\"license_key\":\"0011K000029bt6rQAA_a1V1K000007JuyDUAS\"},\"version\":1}}'"
 }
 
-variable "Gateway-URI"{
-  default = ""
+variable "manager_auth_conf"{
+  default = "'{\"cookie_name\":\"04tm34l\",\"secret\":\"nothing\",\"storage\":\"kong\",\"cookie_secure\":false,\"cookie_samesite\":\"off\",\"cookie_lifetime\":21600}'"
 }
 
-variable "Admin-API-URI"{
-  default = ""
+variable "dev_portal_auth_conf"{
+  default = "'{\"cookie_name\":\"04tm35l\",\"secret\":\"nothing\",\"storage\":\"kong\",\"cookie_secure\":false,\"cookie_samesite\":\"off\",\"cookie_lifetime\":21600}'"
 }
 
-variable "Manager-URI"{
-  default = ""
+variable "gateway_uri"{
+  default = "gateway.gemsapi.io"
 }
 
-variable "Dev-Portal-URI"{
-  default = ""
+variable "admin_api_uri"{
+  default = "adminapi.gemsapi.io"
 }
 
-variable "Dev-Portal-API-URI"{
-  default = ""
+variable "manager_uri"{
+  default = "manager.gemsapi.io"
+}
+
+variable "dev_portal_uri"{
+  default = "devportal.gemsapi.io"
+}
+
+variable "dev_portal_api_uri"{
+  default = "devportalapi.gemsapi.io"
+}
+
+variable "provider_ip"{
+  default = "129.126.72.14"
+}
+
+variable "key_name"{
+  default = "awsgems"
+}
+
+variable "path_to_pem_file"{
+  default = "~/.ssh/awsgems.pem"
 }
