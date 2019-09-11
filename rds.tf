@@ -16,8 +16,8 @@ resource "aws_db_instance" "GEMS-Tenant-DB" {
     instance_class         = "db.t2.micro"
     db_subnet_group_name   = "${aws_db_subnet_group.GEMS_Tenant_DB_SG.id}"
     name                   = "kong"
-    username               = "postgres"
-    password               = "Pass1234"
+    username               = "${var.database_admin_username}"
+    password               = "${var.database_admin_password}"
     parameter_group_name   = "default.postgres10"
     publicly_accessible    = true
     vpc_security_group_ids = ["${aws_security_group.GEMS_Tenant_DB.id}"]

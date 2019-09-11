@@ -4,7 +4,7 @@ data "aws_route53_zone" "gemsapi" {
 
 resource "aws_route53_record" "gateway" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
-  name    = "gateway.${data.aws_route53_zone.gemsapi.name}"
+  name    = "${var.gateway_uri}."
   type    = "A"
   
   alias {
@@ -15,7 +15,7 @@ resource "aws_route53_record" "gateway" {
 }
 resource "aws_route53_record" "adminapi" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
-  name    = "adminapi.${data.aws_route53_zone.gemsapi.name}"
+  name    = "${var.admin_api_uri}."
   type    = "A"
   
   alias {
@@ -26,7 +26,7 @@ resource "aws_route53_record" "adminapi" {
 }
 resource "aws_route53_record" "manager" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
-  name    = "manager.${data.aws_route53_zone.gemsapi.name}"
+  name    = "${var.manager_uri}."
   type    = "A"
   
   alias {
@@ -37,7 +37,7 @@ resource "aws_route53_record" "manager" {
 }
 resource "aws_route53_record" "devportal" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
-  name    = "devportal.${data.aws_route53_zone.gemsapi.name}"
+  name    = "${var.dev_portal_uri}."
   type    = "A"
   
   alias {
@@ -48,7 +48,7 @@ resource "aws_route53_record" "devportal" {
 }
 resource "aws_route53_record" "devportalapi" {
   zone_id = "${data.aws_route53_zone.gemsapi.zone_id}"
-  name    = "devportalapi.${data.aws_route53_zone.gemsapi.name}"
+  name    = "${var.dev_portal_api_uri}."
   type    = "A"
   
   alias {
