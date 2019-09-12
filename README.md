@@ -14,8 +14,8 @@ Terraform scripts for Kong EE deployment in AWS. These scripts will help to spin
 2. Just init, plan and apply!
 
 ```
-terraform init
-terraform plan
+terraform init -var-file="secret.tfvars"
+terraform plan -var-file="secret.tfvars"
 
 # Running with local vars that store secrets
 terraform apply -var-file=secret.tfvars
@@ -26,17 +26,13 @@ terraform apply -var-file=secret.tfvars
 If you decided to bring down the EC2 instance after testing, just destroy it by running this :
 
 ```
-terraform destroy
+terraform destroy -var-file="secret.tfvars"
 ```
 
 ## TODO
-
-1. Add load balancers security group
-2. Add load balancers
-3. Install Kong into each VM
-4. Containerize the terraform runtime
-5. Integrate with S3 backend
-6. Beef up documentations
+1. Containerize the terraform runtime
+2. Integrate with S3 backend
+3. Beef up documentations
 
 ## License
 
