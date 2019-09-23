@@ -1,5 +1,5 @@
 data "aws_route53_zone" "gemsapi" {
-  name         = "gemsapi.io."
+  name         = "${var.route53_domain}"
 }
 
 resource "aws_route53_record" "gateway" {
