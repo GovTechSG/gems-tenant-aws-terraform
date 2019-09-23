@@ -203,7 +203,7 @@ resource "aws_lb" "GEMS-ELB-Dev-Portal-API" {
     name                       = "GEMS-ELB-Dev-Portal-API"
     internal                   = false
     load_balancer_type         = "application"
-    security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Dev_Portal.id}"]
+    security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Dev_Portal_API.id}"]
     subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
     enable_deletion_protection = false
 
