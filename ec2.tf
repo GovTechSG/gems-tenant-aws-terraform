@@ -97,7 +97,7 @@ resource "aws_instance" "GEMS_Tenant_Bastion" {
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_instance" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
   ami           = "${var.aws_ami_id}"
-  instance_type = "t2.micro"
+  instance_type = "${var.instance_sizes}"
   vpc_security_group_ids = ["${aws_security_group.GEMS_Tenant_Kong_Manager_And_Admin_API.id}"]
   subnet_id = "${aws_subnet.az1_pub.id}"
   key_name = "${var.key_name}"

@@ -13,7 +13,7 @@
 
 
 resource "aws_lb_target_group" "GEMS-TG-Gateway" {
-    name        = "GEMS-TG-Gateway"
+    name        = "${var.gems_tag}-TG-Gateway"
     port        = 8000
     protocol    = "HTTPS"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -33,7 +33,7 @@ resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
 # }
 
 resource "aws_lb" "GEMS-ELB-Gateway" {
-    name                       = "GEMS-ELB-Gateway"
+    name                       = "${var.gems_tag}-ELB-Gateway"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
@@ -59,7 +59,7 @@ resource "aws_lb_listener" "GEMS-Listener-Gateway" {
 }
 
 resource "aws_lb_target_group" "GEMS-TG-Admin-API" {
-    name        = "GEMS-TG-Admin-API"
+    name        = "${var.gems_tag}-TG-Admin-API"
     port        = 8001
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -76,7 +76,7 @@ resource "aws_lb_target_group_attachment" "GEMS-TGA-Admin-API" {
 }
 
 resource "aws_lb" "GEMS-ELB-Admin-API" {
-    name                       = "GEMS-ELB-Admin-API"
+    name                       = "${var.gems_tag}-ELB-Admin-API"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Admin_API.id}"]
@@ -102,7 +102,7 @@ resource "aws_lb_listener" "GEMS-Listener-Admin-API" {
 }
 
 resource "aws_lb_target_group" "GEMS-TG-Manager" {
-    name        = "GEMS-TG-Manager"
+    name        = "${var.gems_tag}-TG-Manager"
     port        = 8002
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -119,7 +119,7 @@ resource "aws_lb_target_group_attachment" "GEMS-TGA-Manager" {
 }
 
 resource "aws_lb" "GEMS-ELB-Manager" {
-    name                       = "GEMS-ELB-Manager"
+    name                       = "${var.gems_tag}-ELB-Manager"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Manager.id}"] 
@@ -144,7 +144,7 @@ resource "aws_lb_listener" "GEMS-Listener-Manager" {
     }
 }
 resource "aws_lb_target_group" "GEMS-TG-Dev-Portal" {
-    name        = "GEMS-TG-Dev-Portal"
+    name        = "${var.gems_tag}-TG-Dev-Portal"
     port        = 8003
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -165,7 +165,7 @@ resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal" {
 # }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal" {
-    name                       = "GEMS-ELB-Dev-Portal"
+    name                       = "${var.gems_tag}-ELB-Dev-Portal"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Dev_Portal.id}"]
@@ -190,7 +190,7 @@ resource "aws_lb_listener" "GEMS-Listener-Dev-Portal" {
     }
 }
 resource "aws_lb_target_group" "GEMS-TG-Dev-Portal-API" {
-    name        = "GEMS-TG-Dev-Portal-API"
+    name        = "${var.gems_tag}-TG-Dev-Portal-API"
     port        = 8004
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -211,7 +211,7 @@ resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal-API" {
 # }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal-API" {
-    name                       = "GEMS-ELB-Dev-Portal-API"
+    name                       = "${var.gems_tag}-ELB-Dev-Portal-API"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Dev_Portal_API.id}"]

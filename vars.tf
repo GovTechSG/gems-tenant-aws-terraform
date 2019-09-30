@@ -11,9 +11,17 @@ variable "secret_key" {
   default = ""
 }
 
+variable "instance_sizes" {
+  default = "t2.micro"
+}
+
+variable "db_size" {
+  default = "t2.micro"
+}
+
 //insert tag to be used for tagging the instances/loadbalancers and other aws resources
 variable "gems_tag" {
-  default = "Gems_Tenant_Dev"
+  default = "gems"
 }
 
 variable "vpc_cidr_ip" {

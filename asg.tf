@@ -1,8 +1,8 @@
 resource "aws_launch_configuration" "gateway_lc" {
   depends_on = [aws_lb.GEMS-ELB-Gateway]
-  name   = "GEMS_Gateway_lc"
+  name   = "${var.gems_tag}_Gateway_lc"
   image_id           = "${var.aws_ami_id}"
-  instance_type = "t2.micro"
+  instance_type = "${var.instance_sizes}"
   security_groups = ["${aws_security_group.GEMS_Tenant_Kong_Gateway.id}"]
   key_name = "${var.key_name}"
 
@@ -47,7 +47,7 @@ resource "aws_launch_configuration" "gateway_lc" {
 
 resource "aws_autoscaling_group" "gateway_asg" {
   depends_on = [aws_lb.GEMS-ELB-Gateway]
-  name                 = "GEMS_Gateway_asg"
+  name                 = "${var.gems_tag}_Gateway_asg"
   launch_configuration = "${aws_launch_configuration.gateway_lc.name}"
   min_size             = 1
   max_size             = 1
@@ -62,16 +62,16 @@ resource "aws_autoscaling_group" "gateway_asg" {
 
   tag {
     key                 = "Name"
-    value               = "GEMS_Gateway_asg"
+    value               = "${var.gems_tag}_Gateway_asg"
     propagate_at_launch = true
   }
 }
 
 resource "aws_launch_configuration" "dev_portal_and_api_lc" {
   depends_on = [aws_lb.GEMS-ELB-Dev-Portal,aws_lb.GEMS-ELB-Dev-Portal-API]
-  name   = "GEMS_Dev_Portal_and_API_lc"
+  name   = "${var.gems_tag}_Dev_Portal_and_API_lc"
   image_id           = "${var.aws_ami_id}"
-  instance_type = "t2.micro"
+  instance_type = "${var.instance_sizes}"
   security_groups = ["${aws_security_group.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"]
   key_name = "${var.key_name}"
 
@@ -116,7 +116,7 @@ resource "aws_launch_configuration" "dev_portal_and_api_lc" {
 
 resource "aws_autoscaling_group" "dev_portal_and_api_asg" {
   depends_on = [aws_lb.GEMS-ELB-Dev-Portal,aws_lb.GEMS-ELB-Dev-Portal-API]
-  name                 = "GEMS_Dev_Portal_and_API_asg"
+  name                 = "${var.gems_tag}_Dev_Portal_and_API_asg"
   launch_configuration = "${aws_launch_configuration.dev_portal_and_api_lc.name}"
   min_size             = 1
   max_size             = 1
@@ -131,7 +131,7 @@ resource "aws_autoscaling_group" "dev_portal_and_api_asg" {
 
   tag {
     key                 = "Name"
-    value               = "GEMS_Dev_Portal_and_API_asg"
+    value               = "${var.gems_tag}_Dev_Portal_and_API_asg"
     propagate_at_launch = true
   }
 }
