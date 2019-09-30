@@ -17,3 +17,8 @@ Steps
 3. Terraform plan
 4. Terraform apply
 5. Terraform destroy (to remove)
+
+###
+To init terraform run the following command
+terraform init -backend-config="access_key=<access key here>" -backend-config="secret_key=<secret key here>"
+For plan apply and destroy run with -var-file=secret.tfvars where secret.tfvars will override default values in vars.tf

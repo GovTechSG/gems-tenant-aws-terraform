@@ -22,12 +22,15 @@ resource "aws_lb_target_group" "GEMS-TG-Gateway" {
       Name = "${var.gems_tag}_tg_gw"
     }
 }
-
-resource "aws_lb_target_group_attachment" "GEMS-TGA-Gateway" {
-    target_group_arn    = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
-    target_id           = "${aws_instance.GEMS_Tenant_Kong_Gateway.id}"
-    port                = 8000
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
+  autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
 }
+# resource "aws_lb_target_group_attachment" "GEMS-TGA-Gateway" {
+#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Gateway.id}"
+#     port                = 8000
+# }
 
 resource "aws_lb" "GEMS-ELB-Gateway" {
     name                       = "GEMS-ELB-Gateway"
@@ -151,11 +154,15 @@ resource "aws_lb_target_group" "GEMS-TG-Dev-Portal" {
     }
 }
 
-resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal" {
-    target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
-    target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
-    port                = 8003
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal" {
+  autoscaling_group_name = "${aws_autoscaling_group.dev_portal_and_api_asg.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
 }
+# resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal" {
+#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
+#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
+#     port                = 8003
+# }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal" {
     name                       = "GEMS-ELB-Dev-Portal"
@@ -192,12 +199,16 @@ resource "aws_lb_target_group" "GEMS-TG-Dev-Portal-API" {
       Name = "${var.gems_tag}_tg_dpa"
     }
 }
-
-resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal-API" {
-    target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
-    target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
-    port                = 8004
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal-API" {
+  autoscaling_group_name = "${aws_autoscaling_group.dev_portal_and_api_asg.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
 }
+
+# resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal-API" {
+#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
+#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
+#     port                = 8004
+# }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal-API" {
     name                       = "GEMS-ELB-Dev-Portal-API"
