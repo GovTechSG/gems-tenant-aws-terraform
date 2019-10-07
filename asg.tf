@@ -53,7 +53,7 @@ resource "aws_autoscaling_group" "gateway_asg" {
   max_size             = 1
   desired_capacity          = 1
   force_delete              = true
-  vpc_zone_identifier       = ["${aws_subnet.az1_pub.id}"]
+  vpc_zone_identifier       = ["${aws_subnet.az1_pri.id}"]
   target_group_arns  = ["${aws_lb_target_group.GEMS-TG-Gateway.arn}"]
 
   lifecycle {
@@ -122,7 +122,7 @@ resource "aws_autoscaling_group" "dev_portal_and_api_asg" {
   max_size             = 1
   desired_capacity          = 1
   force_delete              = true
-  vpc_zone_identifier       = ["${aws_subnet.az1_pub.id}"]
+  vpc_zone_identifier       = ["${aws_subnet.az1_pri.id}"]
   target_group_arns  = ["${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}","${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"]
 
   lifecycle {
