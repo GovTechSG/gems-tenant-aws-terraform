@@ -1,9 +1,10 @@
 resource "aws_launch_configuration" "gateway_lc" {
-  depends_on = [aws_lb.GEMS-ELB-Gateway]
+  depends_on = [aws_elb.GEMS-ELB-Gateway]
   name   = "${var.gems_tag}_Gateway_lc"
   image_id           = "${var.aws_ami_id}"
   instance_type = "${var.instance_sizes}"
   security_groups = ["${aws_security_group.GEMS_Tenant_Kong_Gateway.id}"]
+  associate_public_ip_address = false
   key_name = "${var.key_name}"
 
   user_data = <<-EOF
@@ -46,7 +47,7 @@ resource "aws_launch_configuration" "gateway_lc" {
 }
 
 resource "aws_autoscaling_group" "gateway_asg" {
-  depends_on = [aws_lb.GEMS-ELB-Gateway]
+  depends_on = [aws_elb.GEMS-ELB-Gateway]
   name                 = "${var.gems_tag}_Gateway_asg"
   launch_configuration = "${aws_launch_configuration.gateway_lc.name}"
   min_size             = 1
@@ -54,7 +55,8 @@ resource "aws_autoscaling_group" "gateway_asg" {
   desired_capacity          = 1
   force_delete              = true
   vpc_zone_identifier       = ["${aws_subnet.az1_pri.id}"]
-  target_group_arns  = ["${aws_lb_target_group.GEMS-TG-Gateway.arn}"]
+  load_balancers = ["${aws_elb.GEMS-ELB-Gateway.id}"]
+  # target_group_arns  = ["${aws_lb_target_group.GEMS-TG-Gateway.arn}"]
 
   lifecycle {
     create_before_destroy = true
@@ -73,6 +75,7 @@ resource "aws_launch_configuration" "dev_portal_and_api_lc" {
   image_id           = "${var.aws_ami_id}"
   instance_type = "${var.instance_sizes}"
   security_groups = ["${aws_security_group.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"]
+  associate_public_ip_address = false
   key_name = "${var.key_name}"
 
   user_data = <<-EOF

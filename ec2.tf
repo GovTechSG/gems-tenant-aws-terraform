@@ -93,7 +93,7 @@ resource "aws_instance" "GEMS_Tenant_Bastion" {
   #     "sudo docker run -d --name kong-ee --restart always -e \"KONG_PORTAL_CORS_ORIGINS=*\" -e \"KONG_DATABASE=postgres\" -e \"KONG_PG_USER=${var.database_admin_username}\" -e \"KONG_PG_PASSWORD=${var.database_admin_password}\" -e \"KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}\" -e \"KONG_LICENSE_DATA=$KONG_LICENSE_DATA\" -e \"KONG_ENFORCE_RBAC=on\" -e \"KONG_PROXY_ACCESS_LOG=/dev/stdout\" -e \"KONG_PROXY_ERROR_LOG=/dev/stderr\" -e \"KONG_PROXY_LISTEN=0.0.0.0:8443, 0.0.0.0:8000 ssl\" -p 8000:8000 kong-ee"
   #   ]
   # }
-# }
+# }git 
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_instance" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
   ami           = "${var.aws_ami_id}"
@@ -101,6 +101,7 @@ resource "aws_instance" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
   vpc_security_group_ids = ["${aws_security_group.GEMS_Tenant_Kong_Manager_And_Admin_API.id}"]
   subnet_id = "${aws_subnet.az1_pri.id}"
   key_name = "${var.key_name}"
+  associate_public_ip_address = false
   depends_on = [aws_db_instance.GEMS-Tenant-DB]
 
   user_data = <<-EOF

@@ -73,7 +73,7 @@ resource "aws_route_table_association" "az2_pub_rta" {
 resource "aws_subnet" "az1_pri" {
   vpc_id     = "${aws_vpc.GEMS_Tenant.id}"
   cidr_block = "${var.vpc_cidr_ip}.20.0/24"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   availability_zone = "${var.region}a"
 
   tags = {
