@@ -11,52 +11,89 @@
 */
 #-----------------------------------------------------------------------------------------------------------------------
 
+resource "aws_elb" "GEMS-ELB-Gateway" {
+  name               = "${var.gems_tag}-ELB-Gateway"
+  subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
+  security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
 
-resource "aws_lb_target_group" "GEMS-TG-Gateway" {
-    name        = "GEMS-TG-Gateway"
-    port        = 8000
-    protocol    = "HTTPS"
-    vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
+  listener {
+    instance_port      = 8000
+    instance_protocol  = "TCP"
+    lb_port            = 443
+    lb_protocol        = "TCP"
+    # ssl_certificate_id = "${var.cert_id}"
+  }
 
-    tags = {
-      Name = "${var.gems_tag}_tg_gw"
-    }
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:8000"
+    interval            = 30
+  }
+
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags = {
+    Name = "${var.gems_tag}-ELB-Gateway"
+  }
 }
 
-resource "aws_lb_target_group_attachment" "GEMS-TGA-Gateway" {
-    target_group_arn    = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
-    target_id           = "${aws_instance.GEMS_Tenant_Kong_Gateway.id}"
-    port                = 8000
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
+  autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
+  elb                    = "${aws_elb.GEMS-ELB-Gateway.id}"
 }
+# resource "aws_lb_target_group" "GEMS-TG-Gateway" {
+#     name        = "${var.gems_tag}-TG-Gateway"
+#     port        = 8000
+#     protocol    = "HTTPS"
+#     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
-resource "aws_lb" "GEMS-ELB-Gateway" {
-    name                       = "GEMS-ELB-Gateway"
-    internal                   = false
-    load_balancer_type         = "application"
-    security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
-    subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
-    enable_deletion_protection = false
+#     tags = {
+#       Name = "${var.gems_tag}_tg_gw"
+#     }
+# }
+# resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
+#   autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
+#   alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+# }
+# # resource "aws_lb_target_group_attachment" "GEMS-TGA-Gateway" {
+# #     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+# #     target_id           = "${aws_instance.GEMS_Tenant_Kong_Gateway.id}"
+# #     port                = 8000
+# # }
 
-    tags = {
-      Name = "${var.gems_tag}_elb_gw"
-    }
-}
+# resource "aws_lb" "GEMS-ELB-Gateway" {
+#     name                       = "${var.gems_tag}-ELB-Gateway"
+#     internal                   = false
+#     load_balancer_type         = "application"
+#     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
+#     subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
+#     enable_deletion_protection = false
 
-resource "aws_lb_listener" "GEMS-Listener-Gateway" {
-    load_balancer_arn   = "${aws_lb.GEMS-ELB-Gateway.arn}"
-    port                = 443
-    protocol            = "HTTPS"
-    ssl_policy          = "ELBSecurityPolicy-2016-08"
-    certificate_arn     = "${var.cert_id}"
+#     tags = {
+#       Name = "${var.gems_tag}_elb_gw"
+#     }
+# }
 
-    default_action {
-        type             = "forward"
-        target_group_arn = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
-    }
-}
+# resource "aws_lb_listener" "GEMS-Listener-Gateway" {
+#     load_balancer_arn   = "${aws_lb.GEMS-ELB-Gateway.arn}"
+#     port                = 443
+#     protocol            = "HTTPS"
+#     ssl_policy          = "ELBSecurityPolicy-2016-08"
+#     certificate_arn     = "${var.cert_id}"
+
+#     default_action {
+#         type             = "forward"
+#         target_group_arn = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+#     }
+# }
 
 resource "aws_lb_target_group" "GEMS-TG-Admin-API" {
-    name        = "GEMS-TG-Admin-API"
+    name        = "${var.gems_tag}-TG-Admin-API"
     port        = 8001
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -73,7 +110,7 @@ resource "aws_lb_target_group_attachment" "GEMS-TGA-Admin-API" {
 }
 
 resource "aws_lb" "GEMS-ELB-Admin-API" {
-    name                       = "GEMS-ELB-Admin-API"
+    name                       = "${var.gems_tag}-ELB-Admin-API"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Admin_API.id}"]
@@ -99,7 +136,7 @@ resource "aws_lb_listener" "GEMS-Listener-Admin-API" {
 }
 
 resource "aws_lb_target_group" "GEMS-TG-Manager" {
-    name        = "GEMS-TG-Manager"
+    name        = "${var.gems_tag}-TG-Manager"
     port        = 8002
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -116,7 +153,7 @@ resource "aws_lb_target_group_attachment" "GEMS-TGA-Manager" {
 }
 
 resource "aws_lb" "GEMS-ELB-Manager" {
-    name                       = "GEMS-ELB-Manager"
+    name                       = "${var.gems_tag}-ELB-Manager"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Manager.id}"] 
@@ -141,7 +178,7 @@ resource "aws_lb_listener" "GEMS-Listener-Manager" {
     }
 }
 resource "aws_lb_target_group" "GEMS-TG-Dev-Portal" {
-    name        = "GEMS-TG-Dev-Portal"
+    name        = "${var.gems_tag}-TG-Dev-Portal"
     port        = 8003
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -151,14 +188,18 @@ resource "aws_lb_target_group" "GEMS-TG-Dev-Portal" {
     }
 }
 
-resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal" {
-    target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
-    target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
-    port                = 8003
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal" {
+  autoscaling_group_name = "${aws_autoscaling_group.dev_portal_and_api_asg.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
 }
+# resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal" {
+#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
+#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
+#     port                = 8003
+# }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal" {
-    name                       = "GEMS-ELB-Dev-Portal"
+    name                       = "${var.gems_tag}-ELB-Dev-Portal"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Dev_Portal.id}"]
@@ -183,7 +224,7 @@ resource "aws_lb_listener" "GEMS-Listener-Dev-Portal" {
     }
 }
 resource "aws_lb_target_group" "GEMS-TG-Dev-Portal-API" {
-    name        = "GEMS-TG-Dev-Portal-API"
+    name        = "${var.gems_tag}-TG-Dev-Portal-API"
     port        = 8004
     protocol    = "HTTP"
     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
@@ -192,15 +233,19 @@ resource "aws_lb_target_group" "GEMS-TG-Dev-Portal-API" {
       Name = "${var.gems_tag}_tg_dpa"
     }
 }
-
-resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal-API" {
-    target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
-    target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
-    port                = 8004
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal-API" {
+  autoscaling_group_name = "${aws_autoscaling_group.dev_portal_and_api_asg.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
 }
 
+# resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal-API" {
+#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
+#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
+#     port                = 8004
+# }
+
 resource "aws_lb" "GEMS-ELB-Dev-Portal-API" {
-    name                       = "GEMS-ELB-Dev-Portal-API"
+    name                       = "${var.gems_tag}-ELB-Dev-Portal-API"
     internal                   = false
     load_balancer_type         = "application"
     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Dev_Portal_API.id}"]

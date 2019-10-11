@@ -10,7 +10,7 @@
 */
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Gateway" {
-  name        = "GEMS_Tenant_Kong_ELB_Gateway"
+  name        = "${var.gems_tag}_ELB_Gateway"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Gateway ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -34,7 +34,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Gateway" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Admin_API" {
-  name        = "GEMS_Tenant_Kong_ELB_Admin_API"
+  name        = "${var.gems_tag}_ELB_Admin_API"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Admin API ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -58,7 +58,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Admin_API" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Manager" {
-  name        = "GEMS_Tenant_Kong_ELB_Manager"
+  name        = "${var.gems_tag}_ELB_Manager"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Manager ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -82,7 +82,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Manager" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Dev_Portal" {
-  name        = "GEMS_Tenant_Kong_ELB_Dev_Portal"
+  name        = "${var.gems_tag}_ELB_Dev_Portal"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Dev Portal ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -106,7 +106,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Dev_Portal" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Dev_Portal_API" {
-  name        = "GEMS_Tenant_Kong_ELB_Dev_Portal_API"
+  name        = "${var.gems_tag}_ELB_Dev_Portal_API"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Dev Portal API ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -130,7 +130,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_ELB_Dev_Portal_API" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Bastion" {
-  name        = "GEMS_Tenant_Bastion"
+  name        = "${var.gems_tag}_Bastion"
   description = "Allow traffic from Kingpin"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -154,7 +154,7 @@ resource "aws_security_group" "GEMS_Tenant_Bastion" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_Gateway" {
-  name        = "GEMS_Tenant_Kong_Gateway"
+  name        = "${var.gems_tag}_Gateway"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Gateway ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -191,7 +191,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Gateway" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
-  name        = "GEMS_Tenant_Kong_Manager_And_Admin_API"
+  name        = "${var.gems_tag}_Manager_And_Admin_API"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Manager ELB and Kong Admin API ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -235,7 +235,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API" {
-  name        = "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API"
+  name        = "${var.gems_tag}_Dev_Portal_And_Dev_Portal_API"
   description = "Allow traffic from GEMS Tenant Bastion and Kong Dev Portal ELB and Kong Dev Portal API ELB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
@@ -279,7 +279,7 @@ resource "aws_security_group" "GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API" {
 }
 #-----------------------------------------------------------------------------------------------------------------------
 resource "aws_security_group" "GEMS_Tenant_DB" {
-  name        = "GEMS_Tenant_DB"
+  name        = "${var.gems_tag}_DB"
   description = "Allow traffic from Instances to DB"
   vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 

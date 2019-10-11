@@ -8,8 +8,8 @@ resource "aws_route53_record" "gateway" {
   type    = "A"
   
   alias {
-    name                   = "${aws_lb.GEMS-ELB-Gateway.dns_name}"
-    zone_id                = "${aws_lb.GEMS-ELB-Gateway.zone_id}"
+    name                   = "dualstack.${aws_elb.GEMS-ELB-Gateway.dns_name}"
+    zone_id                = "${aws_elb.GEMS-ELB-Gateway.zone_id}"
     evaluate_target_health = false
   }
 }

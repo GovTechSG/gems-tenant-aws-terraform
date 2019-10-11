@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "GEMS_Tenant_DB_SG" {
-    name       = "gems_tenant_db_sg"
+    name       = "${var.gems_tag}_db_sg"
     subnet_ids = ["${aws_subnet.az1_pub.id}", "${aws_subnet.az2_pub.id}"]
 
     tags = {
@@ -8,12 +8,12 @@ resource "aws_db_subnet_group" "GEMS_Tenant_DB_SG" {
 }
 
 resource "aws_db_instance" "GEMS-Tenant-DB" {
-    identifier             = "gems-tenant-db"
+    identifier             = "${var.gems_tag}-db"
     allocated_storage      = 20
     storage_type           = "gp2"
     engine                 = "postgres"
     engine_version         = "10.6"
-    instance_class         = "db.t2.micro"
+    instance_class         = "db.${var.db_size}"
     db_subnet_group_name   = "${aws_db_subnet_group.GEMS_Tenant_DB_SG.id}"
     name                   = "kong"
     username               = "${var.database_admin_username}"
