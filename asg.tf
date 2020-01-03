@@ -38,7 +38,7 @@ resource "aws_launch_configuration" "gateway_lc" {
               docker run --rm -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_PASSWORD=${var.portal_admin_password}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" kong-ee kong migrations bootstrap
               docker run --rm -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_PASSWORD=${var.portal_admin_password}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" kong-ee kong migrations up
               docker rm -f kong-ee
-              docker run -d --name kong-ee --restart always -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" -e "KONG_ENFORCE_RBAC=on" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_PROXY_LISTEN=off" -e "KONG_STREAM_LISTEN=0.0.0.0:8443, 0.0.0.0:8000" -p 8000:8000 kong-ee 
+              docker run -d --name kong-ee --restart always -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" -e "KONG_ENFORCE_RBAC=on" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_PROXY_LISTEN=0.0.0.0:8443, 0.0.0.0:8000" -p 8000:8000 kong-ee 
               EOF
 
   lifecycle {
