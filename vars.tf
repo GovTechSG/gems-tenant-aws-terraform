@@ -19,7 +19,8 @@ variable "db_size" {
   default = "t2.micro"
 }
 
-//insert tag to be used for tagging the instances/loadbalancers and other aws resources
+//insert tag to be used for tagging the instances/loadbalancers and other aws resources. You can name it to
+// anything like project_tag etc..
 variable "gems_tag" {
   default = "gems"
 }
@@ -61,35 +62,35 @@ variable "dev_portal_auth_conf"{
 }
 //insert the route53 domain to be used e.g. example.io
 variable "route53_domain" {
-  default = "gemsapi.io."
+  default = ""
 }
 //insert kong gateway uri e.g. gateway.example.io
 variable "gateway_uri"{
-  default = "gateway.gemsapi.io"
+  default = ""
 }
 
 //insert kong admin api uri e.g. admin.example.io
 variable "admin_api_uri"{
-  default = "adminapi.gemsapi.io"
+  default = ""
 }
 
 //insert kong manager uri e.g. manager.example.io
 variable "manager_uri"{
-  default = "manager.gemsapi.io"
+  default = ""
 }
 
 //insert kong dev portal ay uri e.g. devportal.example.io
 variable "dev_portal_uri"{
-  default = "devportal.gemsapi.io"
+  default = ""
 }
 
 //insert kong dev portal api uri e.g. devapi.example.io
 variable "dev_portal_api_uri"{
-  default = "devportalapi.gemsapi.io"
+  default = ""
 }
 //the ip of your current machine or the source to which access to it is allowed for both SSH and browser access
 variable "provider_ip"{
-  default = "129.126.72.14"
+  default = ""
 }
 //name of the key used to SSH into the instances e.g. awskong
 variable "key_name"{
@@ -101,5 +102,5 @@ variable "path_to_pem_file"{
 }
 
 variable "dev_portal_auth_config" {
-  default = "'{\"leeway\": 100,\"issuer\": \"https://cognito-idp.ap-southeast-1.amazonaws.com/ap-southeast-1_LdD2g2BG3/.well-known/openid-configuration\",\"client_secret\": [\"17931tfpo3ee126i194qk1rji3tq5b1jote16n92easbcht7mp7l\"],\"consumer_by\": [\"username\",\"custom_id\",\"id\"],\"scopes\": [\"openid\",\"profile\",\"email\"],\"logout_query_arg\": \"logout\",\"ssl_verify\": false,\"login_action\": \"redirect\",\"logout_redirect_uri\": [\"https://kongtest4.auth.ap-southeast-1.amazoncognito.com/logout?client_id=m2klbb9tn65roiml6flvj025q&logout_uri=devportal.gemsapi.io/default\"],\"login_tokens\": {},\"login_redirect_uri\": [\"https://devportal.gemsapi.io/default\"],\"forbidden_redirect_uri\": [\"https://devportal.gemsapi.io/default/unauthorized\"],\"client_id\": [\"m2klbb9tn65roiml6flvj025q\"],\"logout_methods\": [\"GET\"],\"consumer_claim\": [\"email\"],\"login_redirect_mode\": \"query\"}'"
+  default = ""
 }
