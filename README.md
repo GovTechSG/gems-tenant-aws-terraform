@@ -1,6 +1,23 @@
+## Kong Terraform Quickstart with AWS
+
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+
+Terraform template to install Kong with AWS resources and Docker.
+
 ### Information
 1. Terraform version > 0.12
 2. Terraform provider.aws  => v2.26.0
+
+### Docker Images
+
+This template is tested with Kong enterprise, thus we hosted the pre-baked image in our own dockerhub repository. 
+
+**Disclaimer** : Please purchase a valid license if you intend to run Kong Enterprise
+
+For your testing, You can retrive the latest Kong CE docker images @ https://hub.docker.com/_/kong.
+
+### Variables
+Please refer to secret.tfvars.example for the required variables.
 
 ### Prerequisite 
 Prior to running this terraform please ensure the following is present.

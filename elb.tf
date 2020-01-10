@@ -11,41 +11,6 @@
 */
 #-----------------------------------------------------------------------------------------------------------------------
 
-# resource "aws_elb" "GEMS-ELB-Gateway" {
-#   name               = "${var.gems_tag}-ELB-Gateway"
-#   subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
-#   security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
-
-#   listener {
-#     instance_port      = 8000
-#     instance_protocol  = "HTTP"
-#     lb_port            = 443
-#     lb_protocol        = "HTTPS"
-#     ssl_certificate_id = "${var.cert_id}"
-#   }
-
-#   health_check {
-#     healthy_threshold   = 2
-#     unhealthy_threshold = 2
-#     timeout             = 3
-#     target              = "TCP:8000"
-#     interval            = 30
-#   }
-
-#   cross_zone_load_balancing   = true
-#   idle_timeout                = 400
-#   connection_draining         = true
-#   connection_draining_timeout = 400
-
-#   tags = {
-#     Name = "${var.gems_tag}-ELB-Gateway"
-#   }
-# }
-
-# resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
-#   autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
-#   elb                    = "${aws_elb.GEMS-ELB-Gateway.id}"
-# }
 resource "aws_lb_target_group" "GEMS-TG-Gateway" {
     name        = "${var.gems_tag}-TG-Gateway"
     port        = 8000
@@ -192,11 +157,6 @@ resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal" {
   autoscaling_group_name = "${aws_autoscaling_group.dev_portal_and_api_asg.id}"
   alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
 }
-# resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal" {
-#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal.arn}"
-#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
-#     port                = 8003
-# }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal" {
     name                       = "${var.gems_tag}-ELB-Dev-Portal"
@@ -237,12 +197,6 @@ resource "aws_autoscaling_attachment" "GEMS-ASGA-Dev-Portal-API" {
   autoscaling_group_name = "${aws_autoscaling_group.dev_portal_and_api_asg.id}"
   alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
 }
-
-# resource "aws_lb_target_group_attachment" "GEMS-TGA-Dev-Portal-API" {
-#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Dev-Portal-API.arn}"
-#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Dev_Portal_And_Dev_Portal_API.id}"
-#     port                = 8004
-# }
 
 resource "aws_lb" "GEMS-ELB-Dev-Portal-API" {
     name                       = "${var.gems_tag}-ELB-Dev-Portal-API"
