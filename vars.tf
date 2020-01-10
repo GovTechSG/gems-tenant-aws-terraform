@@ -11,9 +11,17 @@ variable "secret_key" {
   default = ""
 }
 
+variable "instance_sizes" {
+  default = "t2.micro"
+}
+
+variable "db_size" {
+  default = "t2.micro"
+}
+
 //insert tag to be used for tagging the instances/loadbalancers and other aws resources
 variable "gems_tag" {
-  default = "Gems_Tenant_Dev"
+  default = "gems"
 }
 
 variable "vpc_cidr_ip" {
@@ -90,4 +98,8 @@ variable "key_name"{
 //path to the pem file used for SSH into instances e.g. ~/awskong.pem
 variable "path_to_pem_file"{
   default = ""
+}
+
+variable "dev_portal_auth_config" {
+  default = "'{\"leeway\": 100,\"issuer\": \"https://cognito-idp.ap-southeast-1.amazonaws.com/ap-southeast-1_LdD2g2BG3/.well-known/openid-configuration\",\"client_secret\": [\"17931tfpo3ee126i194qk1rji3tq5b1jote16n92easbcht7mp7l\"],\"consumer_by\": [\"username\",\"custom_id\",\"id\"],\"scopes\": [\"openid\",\"profile\",\"email\"],\"logout_query_arg\": \"logout\",\"ssl_verify\": false,\"login_action\": \"redirect\",\"logout_redirect_uri\": [\"https://kongtest4.auth.ap-southeast-1.amazoncognito.com/logout?client_id=m2klbb9tn65roiml6flvj025q&logout_uri=devportal.gemsapi.io/default\"],\"login_tokens\": {},\"login_redirect_uri\": [\"https://devportal.gemsapi.io/default\"],\"forbidden_redirect_uri\": [\"https://devportal.gemsapi.io/default/unauthorized\"],\"client_id\": [\"m2klbb9tn65roiml6flvj025q\"],\"logout_methods\": [\"GET\"],\"consumer_claim\": [\"email\"],\"login_redirect_mode\": \"query\"}'"
 }
