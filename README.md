@@ -1,5 +1,7 @@
 ## Kong Terraform Quickstart with AWS
 
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+
 Terraform template to install Kong with AWS resources and Docker.
 
 ### Information
