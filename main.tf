@@ -7,7 +7,7 @@ provider "aws" {
 
 terraform {
     backend "s3" {
-        bucket = "gems-terraform-s3"
+        bucket = "gems-terraform-s3" // Point to your own s3 bucket
         region = "ap-southeast-1"
         key = "./terraform.tfstate"
     }
