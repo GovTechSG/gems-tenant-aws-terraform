@@ -11,86 +11,86 @@
 */
 #-----------------------------------------------------------------------------------------------------------------------
 
-resource "aws_elb" "GEMS-ELB-Gateway" {
-  name               = "${var.gems_tag}-ELB-Gateway"
-  subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
-  security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
+# resource "aws_elb" "GEMS-ELB-Gateway" {
+#   name               = "${var.gems_tag}-ELB-Gateway"
+#   subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
+#   security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
 
-  listener {
-    instance_port      = 8000
-    instance_protocol  = "TCP"
-    lb_port            = 443
-    lb_protocol        = "TCP"
-    # ssl_certificate_id = "${var.cert_id}"
-  }
+#   listener {
+#     instance_port      = 8000
+#     instance_protocol  = "HTTP"
+#     lb_port            = 443
+#     lb_protocol        = "HTTPS"
+#     ssl_certificate_id = "${var.cert_id}"
+#   }
 
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
-    target              = "TCP:8000"
-    interval            = 30
-  }
+#   health_check {
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     timeout             = 3
+#     target              = "TCP:8000"
+#     interval            = 30
+#   }
 
-  cross_zone_load_balancing   = true
-  idle_timeout                = 400
-  connection_draining         = true
-  connection_draining_timeout = 400
+#   cross_zone_load_balancing   = true
+#   idle_timeout                = 400
+#   connection_draining         = true
+#   connection_draining_timeout = 400
 
-  tags = {
-    Name = "${var.gems_tag}-ELB-Gateway"
-  }
-}
-
-resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
-  autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
-  elb                    = "${aws_elb.GEMS-ELB-Gateway.id}"
-}
-# resource "aws_lb_target_group" "GEMS-TG-Gateway" {
-#     name        = "${var.gems_tag}-TG-Gateway"
-#     port        = 8000
-#     protocol    = "HTTPS"
-#     vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
-
-#     tags = {
-#       Name = "${var.gems_tag}_tg_gw"
-#     }
+#   tags = {
+#     Name = "${var.gems_tag}-ELB-Gateway"
+#   }
 # }
+
 # resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
 #   autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
-#   alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+#   elb                    = "${aws_elb.GEMS-ELB-Gateway.id}"
 # }
-# # resource "aws_lb_target_group_attachment" "GEMS-TGA-Gateway" {
-# #     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
-# #     target_id           = "${aws_instance.GEMS_Tenant_Kong_Gateway.id}"
-# #     port                = 8000
-# # }
+resource "aws_lb_target_group" "GEMS-TG-Gateway" {
+    name        = "${var.gems_tag}-TG-Gateway"
+    port        = 8000
+    protocol    = "HTTPS"
+    vpc_id      = "${aws_vpc.GEMS_Tenant.id}"
 
-# resource "aws_lb" "GEMS-ELB-Gateway" {
-#     name                       = "${var.gems_tag}-ELB-Gateway"
-#     internal                   = false
-#     load_balancer_type         = "application"
-#     security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
-#     subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
-#     enable_deletion_protection = false
-
-#     tags = {
-#       Name = "${var.gems_tag}_elb_gw"
-#     }
+    tags = {
+      Name = "${var.gems_tag}_tg_gw"
+    }
+}
+resource "aws_autoscaling_attachment" "GEMS-ASGA-Gateway" {
+  autoscaling_group_name = "${aws_autoscaling_group.gateway_asg.id}"
+  alb_target_group_arn   = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+}
+# resource "aws_lb_target_group_attachment" "GEMS-TGA-Gateway" {
+#     target_group_arn    = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+#     target_id           = "${aws_instance.GEMS_Tenant_Kong_Gateway.id}"
+#     port                = 8000
 # }
 
-# resource "aws_lb_listener" "GEMS-Listener-Gateway" {
-#     load_balancer_arn   = "${aws_lb.GEMS-ELB-Gateway.arn}"
-#     port                = 443
-#     protocol            = "HTTPS"
-#     ssl_policy          = "ELBSecurityPolicy-2016-08"
-#     certificate_arn     = "${var.cert_id}"
+resource "aws_lb" "GEMS-ELB-Gateway" {
+    name                       = "${var.gems_tag}-ELB-Gateway"
+    internal                   = false
+    load_balancer_type         = "application"
+    security_groups            =  ["${aws_security_group.GEMS_Tenant_Kong_ELB_Gateway.id}"] 
+    subnets                    = ["${aws_subnet.az1_pub.id}","${aws_subnet.az2_pub.id}"]
+    enable_deletion_protection = false
 
-#     default_action {
-#         type             = "forward"
-#         target_group_arn = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
-#     }
-# }
+    tags = {
+      Name = "${var.gems_tag}_elb_gw"
+    }
+}
+
+resource "aws_lb_listener" "GEMS-Listener-Gateway" {
+    load_balancer_arn   = "${aws_lb.GEMS-ELB-Gateway.arn}"
+    port                = 443
+    protocol            = "HTTPS"
+    ssl_policy          = "ELBSecurityPolicy-2016-08"
+    certificate_arn     = "${var.cert_id}"
+
+    default_action {
+        type             = "forward"
+        target_group_arn = "${aws_lb_target_group.GEMS-TG-Gateway.arn}"
+    }
+}
 
 resource "aws_lb_target_group" "GEMS-TG-Admin-API" {
     name        = "${var.gems_tag}-TG-Admin-API"

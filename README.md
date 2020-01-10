@@ -23,7 +23,7 @@ To init terraform run the following command :
 terraform init -backend-config="access_key=<access key here>" -backend-config="secret_key=<secret key here>"
 ```
 
-#### Running Terraform Plant
+#### Running Terraform Plan
 For plan ,apply and destroy run with the flag ```-var-file=secret.tfvars``` where your local secret.tfvars will override default values in vars.tf
 
 Examples :

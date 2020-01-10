@@ -1,5 +1,5 @@
 resource "aws_launch_configuration" "gateway_lc" {
-  depends_on = [aws_elb.GEMS-ELB-Gateway]
+  depends_on = [aws_lb.GEMS-ELB-Gateway]
   name   = "${var.gems_tag}_Gateway_lc"
   image_id           = "${var.aws_ami_id}"
   instance_type = "${var.instance_sizes}"
@@ -38,7 +38,7 @@ resource "aws_launch_configuration" "gateway_lc" {
               docker run --rm -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_PASSWORD=${var.portal_admin_password}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" kong-ee kong migrations bootstrap
               docker run --rm -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_PASSWORD=${var.portal_admin_password}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" kong-ee kong migrations up
               docker rm -f kong-ee
-              docker run -d --name kong-ee --restart always -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" -e "KONG_ENFORCE_RBAC=on" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_PROXY_LISTEN=off" -e "KONG_STREAM_LISTEN=0.0.0.0:8443, 0.0.0.0:8000" -p 8000:8000 kong-ee 
+              docker run -d --name kong-ee --restart always -e "KONG_DATABASE=postgres" -e "KONG_PG_USER=${var.database_admin_username}" -e "KONG_PG_PASSWORD=${var.database_admin_password}" -e "KONG_PG_HOST=${aws_db_instance.GEMS-Tenant-DB.address}" -e "KONG_LICENSE_DATA=$KONG_LICENSE_DATA" -e "KONG_ENFORCE_RBAC=on" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_PROXY_LISTEN=0.0.0.0:8443, 0.0.0.0:8000 ssl" -p 8000:8000 kong-ee 
               EOF
 
   lifecycle {
@@ -47,7 +47,7 @@ resource "aws_launch_configuration" "gateway_lc" {
 }
 
 resource "aws_autoscaling_group" "gateway_asg" {
-  depends_on = [aws_elb.GEMS-ELB-Gateway]
+  depends_on = [aws_lb.GEMS-ELB-Gateway]
   name                 = "${var.gems_tag}_Gateway_asg"
   launch_configuration = "${aws_launch_configuration.gateway_lc.name}"
   min_size             = 1
@@ -55,8 +55,8 @@ resource "aws_autoscaling_group" "gateway_asg" {
   desired_capacity          = 1
   force_delete              = true
   vpc_zone_identifier       = ["${aws_subnet.az1_pri.id}"]
-  load_balancers = ["${aws_elb.GEMS-ELB-Gateway.id}"]
-  # target_group_arns  = ["${aws_lb_target_group.GEMS-TG-Gateway.arn}"]
+  # load_balancers = ["${aws_lb.GEMS-ELB-Gateway.id}"]
+  target_group_arns  = ["${aws_lb_target_group.GEMS-TG-Gateway.arn}"]
 
   lifecycle {
     create_before_destroy = true
