@@ -78,3 +78,4 @@ resource "aws_instance" "GEMS_Tenant_Kong_Manager_And_Admin_API" {
   tags = {
     Name = "${var.gems_tag}_ec2_mgr_adm"
   }
+}
